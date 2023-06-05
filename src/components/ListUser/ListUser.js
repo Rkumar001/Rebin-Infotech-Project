@@ -11,16 +11,22 @@ import {
   Box,
   Grid,
   Select,
+  Button,
   MenuItem,
 } from "@mui/material";
 import styled from "styled-components";
 import usersData from "./users.json";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Wrapper = styled(Box)`
   gap: 1rem;
   height: 80vh;
   align-items: center;
   justify-content: center;
+`;
+
+const AvatarCell = styled(TableCell)`
+  text-align: center;
 `;
 
 const ListUser = () => {
@@ -33,6 +39,10 @@ const ListUser = () => {
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
+  };
+
+  const handleDeleteUser = (userId) => {
+    setUsers(users.filter((user) => user.id !== userId));
   };
 
   const filteredUsers = users.filter((user) => {
@@ -80,23 +90,32 @@ const ListUser = () => {
             <TableBody>
               {filteredUsers.map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell>
+                  <AvatarCell sx={{ textAlign: "center" }}>
                     <img
                       src={user.Avatar}
                       alt="Avatar"
                       width="50"
                       height="50"
                     />
-                  </TableCell>
+                  </AvatarCell>
                   <TableCell align="right">{user.first_name}</TableCell>
                   <TableCell align="right">{user.last_name}</TableCell>
                   <TableCell align="right">{user.email}</TableCell>
                   <TableCell align="right">{user.gender}</TableCell>
-                  <TableCell align="right">{user.color}</TableCell>
+                  <TableCell
+                    align="right"
+                    style={{ backgroundColor: user.color }}
+                  >
+                    {user.color}
+                  </TableCell>
                   <TableCell align="right">
                     {user.Status ? "Active" : "Inactive"}
                   </TableCell>
-                  <TableCell align="right"></TableCell>
+                  <TableCell align="right">
+                    <Button onClick={() => handleDeleteUser(user.id)}>
+                      <DeleteIcon />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
